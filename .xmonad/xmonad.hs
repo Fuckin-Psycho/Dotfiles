@@ -4,7 +4,6 @@ import System.Exit
 import qualified XMonad.StackSet as W
 
 -- Actions
-import XMonad.Actions.CopyWindow
 import XMonad.Actions.CycleWS
 import XMonad.Actions.MouseResize
 import XMonad.Actions.Promote
@@ -12,7 +11,6 @@ import XMonad.Actions.WithAll
 
 -- Hooks
 import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.EwmhDesktops
@@ -100,7 +98,7 @@ myKeys = [ ("M-q", spawn "xmonad --recompile; xmonad --restart") -- Recompiles a
          , ("M-S-n", spawn myEditor)
 
          -- Killing windows
-         , ("M-S-c", kill1) -- Kill the currently focused window
+         , ("M-S-c", kill) -- Kill the currently focused window
          , ("M-S-a", killAll) -- Kill all windows on current workspace
 
          -- Floating windows
