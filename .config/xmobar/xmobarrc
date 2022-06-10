@@ -1,1 +1,38 @@
-config
+Config { font            = "xft:JetBrainsMono Nerd Font:bold:size=10:antialias=true:hinting=true"      
+       , additionalFonts = [ "xft:Font Awesome 6 Free Solid:pixelsize=11"
+                           , "xft:Font Awesome 6 Brands:pixelsize=11"
+			   ]
+       
+       , bgColor      = "#2D2A2E"
+       , fgColor      = "#FCFCFA"
+       , position     = TopSize L 100 24
+       , lowerOnStart = True
+       , allDesktops  = True 
+       , iconRoot     = ".config/xmonad/icons/"
+       , commands     = [ Run Com ".config/xmobar/padding-icon.sh" [] "tray" 10
+                   
+                        , Run Date "%a %B %d %Y <fn=1></fn> %H:%M:%S" "date" 1
+   
+                        , Run Kbd [("us", "US"), ("ru", "RU")]
+
+                        , Run Battery ["-t", "<left>%"] 60
+                        
+                        , Run Alsa "default" "Master" 
+                            [ "-t", "<volumestatus>"
+                            , "--suffix", "True"
+                            , "--"
+                            , "--on", ""
+                            , "--off", "MUTE"
+                            ] 
+                   
+                        , Run Brightness ["-t", "<percent>%", "--", "-D", "intel_backlight"] 1                  
+                        
+                        , Run Com ".config/xmobar/music.sh" [] "music" 5
+
+                        , Run UnsafeXMonadLog
+                        ]   
+       
+       , sepChar  = "%"
+       , alignSep = "}{"
+       , template = "<action=`rofi -show drun` button=1><icon=Haskell.xpm/> <fc=#666666>|</fc></action> %UnsafeXMonadLog% }{ <box type=Bottom width=2 mb=2 color=#E6DB74><fc=#E6DB74><fn=1></fn> %bright%</fc></box> <action=`pavucontrol` button=1> <box type=Bottom width=2 mb=2 color=#AE81FF><fc=#AE81FF><fn=1></fn> %alsa:default:Master%</fc></box></action>  <box type=Bottom width=2 mb=2 color=#E95678><fc=#E95678><fn=1></fn> %battery%</fc></box>  <box type=Bottom width=2 mb=2 color=#FD971F><fc=#FD971F><fn=1></fn> %kbd%</fc></box>  <box type=Bottom width=2 mb=2 color=#A6E22E><fc=#A6E22E><fn=1></fn> %date%</fc></box>%tray%" 
+       }
