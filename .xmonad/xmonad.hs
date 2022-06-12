@@ -10,16 +10,17 @@ import XMonad.Actions.Promote
 import XMonad.Actions.WithAll
 
 -- Hooks
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
-import XMonad.Hooks.EwmhDesktops
 
 -- Layouts
 import XMonad.Layout.Grid
 import XMonad.Layout.SimplestFloat
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.Tabbed
+import XMonad.Layout.ThreeColumns
 
 -- Layout modifiers
 import XMonad.Layout.NoBorders
@@ -29,19 +30,16 @@ import XMonad.Layout.ShowWName
 import XMonad.Layout.WindowArranger
  
 -- Utilites
-import XMonad.Util.EZConfig 
+import XMonad.Util.ClickableWorkspaces
 import XMonad.Util.Cursor
+import XMonad.Util.EZConfig 
 import XMonad.Util.SpawnOnce 
-import XMonad.Util.ClickableWorkspaces 
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
 myTerminal :: String
 myTerminal = "kitty"
-
-myEditor :: String
-myEditor = myTerminal ++ " -e nvim " 
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -95,7 +93,7 @@ myKeys = [ ("M-q", spawn "xmonad --recompile; xmonad --restart") -- Recompiles a
          , ("M-C-t", spawn "kotatogram-desktop")
          , ("M-S-f", spawn "pcmanfm")
          , ("M-S-p", spawn "keepassxc")
-         , ("M-S-n", spawn myEditor)
+         , ("M-S-n", spawn "kitty -e nvim")
 
          -- Killing windows
          , ("M-S-c", kill) -- Kill the currently focused window
@@ -161,45 +159,35 @@ myKeys = [ ("M-q", spawn "xmonad --recompile; xmonad --restart") -- Recompiles a
 -- which denotes layout choice.
 --         
 myLayout = mouseResize $ windowArrange myDefaultLayout
-          where
+         where
            myDefaultLayout   = tiled 
                            ||| grid 
+                           ||| threeCol
                            ||| tabs 
                            ||| floats 
                            ||| monocle
 
-tiled   = renamed [Replace "Tall"]
-          $ smartBorders
-          $ smartSpacingWithEdge 5
-          $ ResizableTall 1 (3/100) (1/2) []
-grid    = renamed [Replace "Grid"]
-          $ smartBorders
-          $ smartSpacingWithEdge 5
-          $ Grid
-tabs    = renamed [Replace "Tabs"]
-          $ smartBorders
-          $ tabbed shrinkText def
-floats  = renamed [Replace "Floats"]
-          $ smartBorders
-          $ simplestFloat
-monocle = renamed [Replace "Monocle"]
-          $ smartBorders
-          $ Full
-
--- XMobar
-mySB :: StatusBarConfig
-mySB = statusBarProp "xmobar" (clickablePP =<< (pure myXmobarPP))
-  where
-myXmobarPP :: PP
-myXmobarPP = def 
-    { ppCurrent = xmobarBorder "Top" "#AE81FF" 2
-    , ppHidden = xmobarColor "#FFFFFF" "" . wrap "" ""
-    , ppHiddenNoWindows = xmobarColor "#BBBBBB" "" 
-    , ppTitle = xmobarColor "#FFFFFF" "" 
-    , ppSep = "<fc=#F92672> • </fc>"  
-    , ppUrgent = xmobarColor "#E95678" "" . wrap "!" "!" 
-    , ppOrder = \(ws:l:t:ex) -> [ws,l]++ex++[t]
-    }
+tiled    = renamed [Replace "Tall"]
+           $ smartBorders
+           $ smartSpacingWithEdge 5
+           $ ResizableTall 1 (3/100) (1/2) []
+grid     = renamed [Replace "Grid"]
+           $ smartBorders
+           $ smartSpacingWithEdge 5
+           $ Grid
+threeCol = renamed [Replace "ThreeCol"]
+           $ smartBorders
+           $ smartSpacingWithEdge 5
+           $ ThreeCol 1 (3/100) (1/2)
+tabs     = renamed [Replace "Tabs"]
+           $ smartBorders
+           $ tabbed shrinkText def
+floats   = renamed [Replace "Floats"]
+           $ smartBorders
+           $ simplestFloat
+monocle  = renamed [Replace "Monocle"]
+           $ smartBorders
+           $ Full
 
 -- This is a layout modifier that will show the workspace name
 myShowWNameTheme :: SWNConfig
@@ -268,6 +256,21 @@ myStartupHook = do
     spawnOnce "dunst &"
     spawn "sleep 2 && trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x2D2A2E --height 20 &"
 
+-- XMobar
+mySB :: StatusBarConfig
+mySB = statusBarProp "xmobar" (clickablePP =<< (pure myXmobarPP))
+  where
+myXmobarPP :: PP
+myXmobarPP = def 
+    { ppCurrent = xmobarBorder "Top" "#AE81FF" 2
+    , ppHidden = xmobarColor "#FFFFFF" "" . wrap "" ""
+    , ppHiddenNoWindows = xmobarColor "#BBBBBB" "" 
+    , ppTitle = xmobarColor "#FFFFFF" "" 
+    , ppSep = "<fc=#F92672> • </fc>"  
+    , ppUrgent = xmobarColor "#E95678" "" . wrap "!" "!" 
+    , ppOrder = \(ws:l:t:ex) -> [ws,l]++ex++[t]
+    }
+    
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 --
