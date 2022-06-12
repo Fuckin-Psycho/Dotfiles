@@ -1,3 +1,4 @@
+-- Core
 import XMonad
 import System.Exit
 import qualified XMonad.StackSet as W
