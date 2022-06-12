@@ -34,5 +34,5 @@ Config { font            = "xft:JetBrainsMono Nerd Font:bold:size=10:antialias=t
        
        , sepChar  = "%"
        , alignSep = "}{"
-       , template = "<action=`rofi -show drun` button=1><icon=Haskell.xpm/> <fc=#666666>|</fc></action> %UnsafeXMonadLog% }{ <box type=Bottom width=2 mb=2 color=#E6DB74><fc=#E6DB74><fn=1></fn> %bright%</fc></box> <action=`pavucontrol` button=1> <box type=Bottom width=2 mb=2 color=#AE81FF><fc=#AE81FF><fn=1></fn> %alsa:default:Master%</fc></box></action>  <box type=Bottom width=2 mb=2 color=#E95678><fc=#E95678><fn=1></fn> %battery%</fc></box>  <box type=Bottom width=2 mb=2 color=#FD971F><fc=#FD971F><fn=1></fn> %kbd%</fc></box>  <box type=Bottom width=2 mb=2 color=#A6E22E><fc=#A6E22E><fn=1></fn> %date%</fc></box>%tray%" 
+       , template = "<icon=Haskell.xpm/> <fc=#666666>|</fc> %UnsafeXMonadLog% }{ <box type=Bottom width=2 mb=2 color=#E6DB74><fc=#E6DB74><fn=1></fn> %bright%</fc></box> <action=`pavucontrol` button=1> <box type=Bottom width=2 mb=2 color=#AE81FF><fc=#AE81FF><fn=1></fn> %alsa:default:Master%</fc></box></action>  <box type=Bottom width=2 mb=2 color=#E95678><fc=#E95678><fn=1></fn> %battery%</fc></box>  <box type=Bottom width=2 mb=2 color=#FD971F><fc=#FD971F><fn=1></fn> %kbd%</fc></box>  <box type=Bottom width=2 mb=2 color=#A6E22E><fc=#A6E22E><fn=1></fn> %date%</fc></box>%tray%" 
        }
