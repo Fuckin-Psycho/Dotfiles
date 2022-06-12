@@ -1,17 +1,16 @@
--- Core
 import XMonad
 import System.Exit
 import qualified XMonad.StackSet as W
 
 -- Actions
-import XMonad.Actions.CycleWS
+import XMonad.Actions.CycleWS 
 import XMonad.Actions.MouseResize
-import XMonad.Actions.Promote
-import XMonad.Actions.WithAll
+import XMonad.Actions.Promote 
+import XMonad.Actions.WithAll 
 
 -- Hooks
 import XMonad.Hooks.EwmhDesktops
-import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageDocks 
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 
@@ -25,21 +24,21 @@ import XMonad.Layout.ThreeColumns
 -- Layout modifiers
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Renamed
-import XMonad.Layout.Spacing
 import XMonad.Layout.ShowWName
+import XMonad.Layout.Spacing
 import XMonad.Layout.WindowArranger
- 
+  
 -- Utilites
 import XMonad.Util.ClickableWorkspaces
 import XMonad.Util.Cursor
-import XMonad.Util.EZConfig 
+import XMonad.Util.EZConfig
 import XMonad.Util.SpawnOnce 
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
 myTerminal :: String
-myTerminal = "kitty"
+myTerminal = "alacritty" 
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -82,19 +81,19 @@ myKeys :: [(String, X ())]
 myKeys = [ ("M-q", spawn "xmonad --recompile; xmonad --restart") -- Recompiles and restart XMonad
          , ("M-S-q", io exitSuccess) -- Quit XMonad
          
-         --  Open my terminal
+         -- Open my terminal
          , ("M-S-<Return>", spawn myTerminal)
 
          -- Run application launcher
          , ("M-p", spawn "rofi -show drun") 
         
          -- My applications
-         , ("M-S-b", spawn "librewolf")
-         , ("M-C-t", spawn "kotatogram-desktop")
-         , ("M-S-f", spawn "pcmanfm")
-         , ("M-S-p", spawn "keepassxc")
-         , ("M-S-n", spawn "kitty -e nvim")
-
+         , ("M-M1-b", spawn "librewolf")
+         , ("M-M1-n", spawn "alacritty -e nvim")
+         , ("M-M1-t", spawn "kotatogram-desktop")
+         , ("M-M1-f", spawn "pcmanfm")
+         , ("M-M1-k", spawn "keepassxc")
+         
          -- Killing windows
          , ("M-S-c", kill) -- Kill the currently focused window
          , ("M-S-a", killAll) -- Kill all windows on current workspace
@@ -102,7 +101,7 @@ myKeys = [ ("M-q", spawn "xmonad --recompile; xmonad --restart") -- Recompiles a
          -- Floating windows
          , ("M-t", withFocused $ windows . W.sink) -- Push floating window back to tile
          , ("M-S-t", sinkAll) -- Push ALL floating windows to tile
-
+          
          -- Window navigation
          , ("M-m", windows W.focusMaster) -- Move focus to the master window
          , ("M-j", windows W.focusDown) -- Move focus to the next window
@@ -120,20 +119,20 @@ myKeys = [ ("M-q", spawn "xmonad --recompile; xmonad --restart") -- Recompiles a
 
          -- Layouts
          , ("M-<Space>", sendMessage NextLayout) -- Switch to next layout
-         , ("M-b", sendMessage ToggleStruts) -- Toggles struts
-         
+         , ("M-b", sendMessage ToggleStruts) -- Toggle status bar gap
+
          -- Window resizing
          , ("M-h", sendMessage Shrink) -- Shrink horizontal window width
          , ("M-l", sendMessage Expand) -- Expand horizontal window width
          , ("M-C-j", sendMessage MirrorShrink) -- Shrink vertical window width
          , ("M-C-k", sendMessage MirrorExpand) -- Expand vertical window width
-
-         -- Controls for moc music player
-         , ("M-u p", spawn "moc --play")
-         , ("M-u l", spawn "moc --next")
-         , ("M-u h", spawn "moc --previous")
-         , ("M-u <Space>", spawn "cmus-remote --toggle-pause")
-
+         
+         -- Controls for moc music player.
+         , ("M-u p", spawn "mocp --play")
+         , ("M-u l", spawn "mocp --next")
+         , ("M-u h", spawn "mocp --previous")
+         , ("M-u <Space>", spawn "mocp --toggle-pause")
+         
          -- Audio controls
          , ("<XF86AudioMute>", spawn "pactl set-sink-mute 0 toggle")  
          , ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume 0 +5%")
@@ -144,7 +143,7 @@ myKeys = [ ("M-q", spawn "xmonad --recompile; xmonad --restart") -- Recompiles a
          , ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 10")
         
          -- Print screen
-         , ("<Print>", spawn "flameshot gui")
+         , ("<Print>", spawn "scrot")
          ]
          
 ------------------------------------------------------------------------
@@ -153,11 +152,11 @@ myKeys = [ ("M-q", spawn "xmonad --recompile; xmonad --restart") -- Recompiles a
 -- You can specify and transform your layouts by modifying these values.
 -- If you change layout bindings be sure to use 'mod-shift-space' after
 -- restarting (with 'mod-q') to reset your layout state to the new
--- defaults, as xmonad preserves your old layout settings by default.
+-- defaults, as XMonad preserves your old layout settings by default.
 --
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
---         
+--
 myLayout = mouseResize $ windowArrange myDefaultLayout
          where
            myDefaultLayout   = tiled 
@@ -165,31 +164,51 @@ myLayout = mouseResize $ windowArrange myDefaultLayout
                            ||| threeCol
                            ||| tabs 
                            ||| floats 
-                           ||| monocle
-
+                           ||| full
+                           
+-- The builtin tiling mode of XMonad. 
+-- Supports Shrink, Expand and IncMasterN.
+--
 tiled    = renamed [Replace "Tall"]
            $ smartBorders
            $ smartSpacingWithEdge 5
            $ ResizableTall 1 (3/100) (1/2) []
+
+-- A simple layout that attempts to put all windows in a square grid.
+--
 grid     = renamed [Replace "Grid"]
            $ smartBorders
            $ smartSpacingWithEdge 5
-           $ Grid
+           $ Grid 
+
+-- A layout similar to tall but with three columns. 
+-- With 2560x1600 pixels this layout can be used for a huge main window and up to six reasonable sized slave windows.
+--
 threeCol = renamed [Replace "ThreeCol"]
            $ smartBorders
            $ smartSpacingWithEdge 5
            $ ThreeCol 1 (3/100) (1/2)
+
+-- A tabbed layout for the XMonad Window Manager.
+--
 tabs     = renamed [Replace "Tabs"]
            $ smartBorders
            $ tabbed shrinkText def
+
+-- A basic floating layout.
+--
 floats   = renamed [Replace "Floats"]
            $ smartBorders
            $ simplestFloat
-monocle  = renamed [Replace "Monocle"]
+
+-- Simple fullscreen mode. Renders the focused window fullscreen.
+--
+full     = renamed [Replace "Full"]
            $ smartBorders
            $ Full
 
--- This is a layout modifier that will show the workspace name
+-- This is a layout modifier that will show the workspace name.
+--
 myShowWNameTheme :: SWNConfig
 myShowWNameTheme = def 
     { swn_font = "xft:JetBrainsMono Nerd Font:bold:size=60"
@@ -214,7 +233,8 @@ myShowWNameTheme = def
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "Gimp"           --> doFloat
+    [ className =? "MPlayer"        --> doFloat
+    , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore 
     ] 
@@ -241,7 +261,7 @@ myLogHook = return ()
 ------------------------------------------------------------------------
 -- Startup hook
 
--- Perform an arbitrary action each time xmonad starts or is restarted
+-- Perform an arbitrary action each time XMonad starts or is restarted
 -- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
 -- per-workspace layout choices.
 --
@@ -257,6 +277,7 @@ myStartupHook = do
     spawn "sleep 2 && trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x2D2A2E --height 20 &"
 
 -- XMobar
+--
 mySB :: StatusBarConfig
 mySB = statusBarProp "xmobar" (clickablePP =<< (pure myXmobarPP))
   where
@@ -270,9 +291,9 @@ myXmobarPP = def
     , ppUrgent = xmobarColor "#E95678" "" . wrap "!" "!" 
     , ppOrder = \(ws:l:t:ex) -> [ws,l]++ex++[t]
     }
-    
+
 ------------------------------------------------------------------------
--- Now run xmonad with all the defaults we set up.
+-- Now run XMonad with all the defaults we set up.
 --
 main :: IO ()
 main = xmonad 
