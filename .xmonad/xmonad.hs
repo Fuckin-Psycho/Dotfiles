@@ -89,11 +89,11 @@ myKeys = [ ("M-q", spawn "xmonad --recompile; xmonad --restart") -- Recompiles a
          , ("M-p", spawn "rofi -show drun") 
         
          -- My applications
-         , ("M-M1-b", spawn "librewolf")
-         , ("M-M1-n", spawn "alacritty -e nvim")
-         , ("M-M1-t", spawn "kotatogram-desktop")
-         , ("M-M1-f", spawn "pcmanfm")
-         , ("M-M1-k", spawn "keepassxc")
+         , ("M-S-b", spawn "librewolf")
+         , ("M-S-n", spawn "alacritty -e nvim")
+         , ("M-C-t", spawn "kotatogram-desktop")
+         , ("M-S-f", spawn "pcmanfm")
+         , ("M-S-p", spawn "keepassxc")
          
          -- Killing windows
          , ("M-S-c", kill) -- Kill the currently focused window
@@ -325,5 +325,6 @@ myConfig = def {
         handleEventHook    = myEventHook,
         logHook            = myLogHook,
         startupHook        = myStartupHook
+    
     }
  `additionalKeysP` myKeys
