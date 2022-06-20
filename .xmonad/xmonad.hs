@@ -128,7 +128,7 @@ myKeys = [ ("M-q", spawn "xmonad --recompile; xmonad --restart") -- Recompiles a
          , ("M-C-j", sendMessage MirrorShrink) -- Shrink vertical window width
          , ("M-C-k", sendMessage MirrorExpand) -- Expand vertical window width
          
-         -- Controls for moc music player.
+         -- Controls for moc music player
          , ("M-u p", spawn "mocp --play")
          , ("M-u l", spawn "mocp --next")
          , ("M-u h", spawn "mocp --previous")
