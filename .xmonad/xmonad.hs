@@ -275,7 +275,7 @@ myStartupHook = do
     spawnOnce "nm-applet &"
     spawnOnce "nitrogen --restore &"
     spawnOnce "dunst &"
-    spawn "sleep 2 && trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x2D2A2E --height 20 &"
+    spawn "sleep 2 && trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x2D2A2E --height 24 &"
 
 -- XMobar
 --
