@@ -27,8 +27,6 @@ Config { font            = "xft:JetBrainsMono Nerd Font:bold:size=10:antialias=t
                    
                         , Run Brightness ["-t", "<percent>%", "--", "-D", "intel_backlight"] 1                  
                         
-                        , Run Com ".config/xmobar/music.sh" [] "music" 5
-
                         , Run UnsafeXMonadLog
                         ]   
        
